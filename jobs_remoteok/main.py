@@ -20,7 +20,20 @@ def get_jobs():
     res = requests.get(url=BASE_URL, headers=R_HEADERS)
     return res.json()
 
+def save_spreadsheet(jobs):
+    wb = Workbook()
+    j_sheet = wb.add_sheet('jobs')
+    bheaders = list(jobs[0].keys())
+   
+    for i in range(0, len(bheaders)):
+        j_sheet.write(0,i,bheaders[i])
+    
+    for i in range(0, len(jobs)):
+        values = list(jobs[i].values())
+        for n in range(0, len(values)):
+            j_sheet.write(i+1,n,values[n])
+    wb.save('jobs_sheet.xls')
 
 if __name__ == "__main__":
-    jobs = get_jobs()[1]
-    print(jobs)
+    jobs = get_jobs()[1:]
+    save_spreadsheet(jobs)  
