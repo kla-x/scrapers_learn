@@ -1,6 +1,7 @@
 import requests
 import xlwt
 from xlwt import Workbook
+import csv
 import smtplib
 from os.path import basename
 
@@ -33,6 +34,19 @@ def save_spreadsheet(jobs):
         for n in range(0, len(values)):
             j_sheet.write(i+1,n,values[n])
     wb.save('jobs_sheet.xls')
+
+
+def save_csv(jobs):
+   
+    bheaders = list(jobs[1].keys())
+    brows = []
+    for i in range(0, len(jobs)):
+        brows.append(list(jobs[i].values()))
+    
+    with open('jobs_lisings.csv', 'w', newline='', encoding='utf-8') as file:
+        writer = csv.writer(file, quoting=csv.QUOTE_ALL)
+        writer.writerow(bheaders)
+        writer.writerows(brows)
 
 if __name__ == "__main__":
     jobs = get_jobs()[1:]
